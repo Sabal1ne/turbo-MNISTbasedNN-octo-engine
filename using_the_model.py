@@ -3,6 +3,7 @@ import mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.utils import to_categorical
+import matplotlib.pyplot as plt
 
 # Загрузка данных
 train_images = mnist.train_images()
@@ -20,12 +21,17 @@ model = Sequential([
 # Load the model's saved weights.
 model.load_weights('model.h5')
 
-# Преобразуйте изображения в одномерные массивы
-test_images_flat = test_images.reshape((-1, 784))
+# Преобразование изображений в одномерный массив длиной 784
+test_images = test_images.reshape((-1, 784))
 
-# Предсказание на первых 5 тестовых изображениях
-predictions = model.predict(test_images_flat[:6])
+# Предсказание на первых 5 изображениях
+predictions = model.predict(test_images[:5])
 
-# Выводим предсказания и фактические метки
-print(np.argmax(predictions, axis=1))  # Предсказанные метки
-print(test_labels[:6])  # Фактические метки
+# Визуализация предсказанных цифр и их истинных значений.
+for i in range(5):
+    # Отображение изображения
+    plt.imshow(np.reshape(test_images[i], (28, 28)), cmap='gray')
+    plt.show()
+    # Печать предсказания модели и истинного значения
+    print("Model's prediction:", np.argmax(predictions[i]))
+    print("True label:", test_labels[i])
